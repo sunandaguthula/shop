@@ -8,10 +8,10 @@
   <!-- <script src="https://cdn.tailwindcss.com"></script> -->
 
   <!-- Global CSS -->
-  <link rel="stylesheet" href="https://d28gyylur12nz7.cloudfront.net/assets/css/styles.css">
+  <link rel="stylesheet" href="http://fubiness.com.s3-website-us-east-1.amazonaws.com/assets/css/styles.css">
 
   <!-- Global CSS -->
-  <script src="https://d28gyylur12nz7.cloudfront.net/assets/js/main.js"></script>
+  <script src="http://fubiness.com.s3-website-us-east-1.amazonaws.com/assets/js/main.js"></script>
 
 
   <!-- Page-Specific CSS -->
@@ -30,7 +30,7 @@
 
         <div class="space-x-4">
             <a class="flex flex-row" href="/">
-                <img src="https://d28gyylur12nz7.cloudfront.net/assets/images/logo.png" alt="Logo" class="h-10 w-10 object-cover" />
+                <img src="http://fubiness.com.s3-website-us-east-1.amazonaws.com/assets/images/logo.png" alt="Logo" class="h-10 w-10 object-cover" />
                 <span class="text-2xl font-bold  ml-3">Fubiness</span>
             </a>
             
@@ -133,7 +133,7 @@
 
             try {
                 // Construct the file path dynamically
-                const filePath = `https://d28gyylur12nz7.cloudfront.net/data/${category}/page${page}.json`;
+                const filePath = `http://fubiness.com.s3-website-us-east-1.amazonaws.com/data/${category}/page${page}.json`;
 
                 // Fetch data from the JSON file
                 const response = await fetch(filePath);
@@ -156,7 +156,7 @@
                     <div class="bg-white border rounded-lg shadow p-2 flex flex-col">
                         <div class="relative w-full h-0 pb-[120%] overflow-hidden rounded-lg">
                         <a href="/product.html?cat=${category}&page=${page}&id=${key}">
-                            <img src="https://d28gyylur12nz7.cloudfront.net/products/${category}/${key}/images/${images[0]}" alt="Product Image" class="absolute inset-0 w-full h-full object-cover">
+                            <img src="http://fubiness.com.s3-website-us-east-1.amazonaws.com/products/${category}/${key}/images/${images[0]}" alt="Product Image" class="absolute inset-0 w-full h-full object-cover">
                         </a>
                             </div>
                         <div class="mt-4">
