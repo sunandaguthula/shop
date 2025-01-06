@@ -8,10 +8,10 @@
   <!-- <script src="https://cdn.tailwindcss.com"></script> -->
 
   <!-- Global CSS -->
-  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="https://d28gyylur12nz7.cloudfront.net/assets/css/styles.css">
 
   <!-- Global CSS -->
-  <script src="/assets/js/main.js"></script>
+  <script src="https://d28gyylur12nz7.cloudfront.net/assets/js/main.js"></script>
 
 
   <!-- Page-Specific CSS -->
@@ -55,7 +55,7 @@
 
         <div class="space-x-4">
             <a class="flex flex-row" href="/">
-                <img src="/assets/images/logo.png" alt="Logo" class="h-10 w-10 object-cover" />
+                <img src="https://d28gyylur12nz7.cloudfront.net/assets/images/logo.png" alt="Logo" class="h-10 w-10 object-cover" />
                 <span class="text-2xl font-bold  ml-3">Fubiness</span>
             </a>
             
@@ -159,7 +159,7 @@
 
             try {
                 // Construct the file path dynamically
-                const filePath = `/data/${category}/page${page}.json`;
+                const filePath = `https://d28gyylur12nz7.cloudfront.net/data/${category}/page${page}.json`;
 
                 // Fetch data from the JSON file
                 const response = await fetch(filePath);
@@ -175,24 +175,24 @@
 
                 // Create imageData array
                 imageData = images.map(image => ({
-                    src: `/products/${category}/${id}/images/${image}`, // Update with your actual image folder path
-                    thumb: `/products/${category}/${id}/images/${image}` // Update with your actual thumbnail folder path
+                    src: `https://d28gyylur12nz7.cloudfront.net/products/${category}/${id}/images/${image}`, // Update with your actual image folder path
+                    thumb: `https://d28gyylur12nz7.cloudfront.net/products/${category}/${id}/images/${image}` // Update with your actual thumbnail folder path
                 }));
 
 
                 images.map((image, index) => {
                     let imgEle = document.createElement('img');
-                    imgEle.src = `/products/${category}/${id}/images/${image}`;
+                    imgEle.src = `https://d28gyylur12nz7.cloudfront.net/products/${category}/${id}/images/${image}`;
                     imgEle.alt = title;
                     imgEle.className = "thumbnail w-1/4 h-auto cursor-pointer border-2 border-transparent hover:border-gray-500";
-                    imgEle.onclick = () => updateLargeImage(`/products/${category}/${id}/images/${image}`, index);
+                    imgEle.onclick = () => updateLargeImage(`https://d28gyylur12nz7.cloudfront.net/products/${category}/${id}/images/${image}`, index);
                     document.getElementById('thumbnailsContainer').appendChild(imgEle);
                 })
 
                 const largeImageContainer = document.getElementById('trigger-gallery');
 
                 largeImageContainer.innerHTML = `
-                    <img class="large-image" id="largeImage" src="/products/${category}/${id}/images/${images[0]}" alt="${title}" class="w-full h-auto" dataIndex="0">
+                    <img class="large-image" id="largeImage" src="https://d28gyylur12nz7.cloudfront.net/products/${category}/${id}/images/${images[0]}" alt="${title}" class="w-full h-auto" dataIndex="0">
                 `;
 
                 productDetailsContainer.innerHTML = `
