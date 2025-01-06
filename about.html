@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang=" en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About us - Chitti's collection</title>
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="/assets/css/styles.css">
+
+  <!-- Global CSS -->
+  <script src="/assets/js/main.js"></script>
+
+
+  <!-- Page-Specific CSS -->
+  
+
+  <!-- Conditional inclusion -->
+
+
+
+</head>
+
+<body>
+  <header class="bg-gray-100 py-4 shadow-md">
+    <div class="container mx-auto px-4 flex items-center justify-between">
+        <!-- Logo and Page Title -->
+
+        <div class="space-x-4">
+            <a class="flex flex-row" href="/">
+                <img src="/assets/images/logo.png" alt="Logo" class="h-10 w-10 object-cover" />
+                <span class="text-2xl font-bold  ml-3">Fubiness</span>
+            </a>
+            
+        </div>
+        </a>
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex space-x-4">
+            <a href="/" class="text-gray-700 hover:text-gray-900">Home</a>
+            <a href="/about.html" class="text-gray-700 hover:text-gray-900">About</a>
+            <a href="/services.html" class="text-gray-700 hover:text-gray-900">Services</a>
+            <a href="/contact.html" class="text-gray-700 hover:text-gray-900">Contact</a>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden text-gray-700 focus:outline-none" id="menuButton">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="md:hidden" id="mobileMenu" style="display: none;">
+        <nav class="bg-gray-200 space-y-2 py-2 px-4">
+            <a href="/" class="block text-gray-700 hover:text-gray-900">Home</a>
+            <a href="/about.html" class="block text-gray-700 hover:text-gray-900">About</a>
+            <a href="/services.html" class="block text-gray-700 hover:text-gray-900">Services</a>
+            <a href="/contact.html" class="block text-gray-700 hover:text-gray-900">Contact</a>
+        </nav>
+    </div>
+</header>
+
+<script>
+    // JavaScript for toggling the mobile menu
+    const menuButton = document.getElementById('menuButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    menuButton.addEventListener('click', () => {
+        const isMenuVisible = mobileMenu.style.display === 'block';
+        mobileMenu.style.display = isMenuVisible ? 'none' : 'block';
+    });
+</script>
+
+  <main class="container mx-auto px-2 py-8">
+    <h1 class="text-2xl font-bold pb-6" id="pageTitle">About us</h1>
+    <section class="about">
+
+
+    <div>
+        <h2>About us page</h2>
+    </div>
+
+
+
+</section>
+  </main>
+
+  <!-- Footer -->
+<footer class="bg-gray-100 py-4 mt-8">
+    <div class="container mx-auto px-4 text-center">
+        <p>&copy; 2025 Fubiness. All rights reserved.</p>
+    </div>
+</footer>
+
+  <!-- Page-Specific JS -->
+  
+</body>
+
+</html>

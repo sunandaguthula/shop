@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang=" en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product details - Chitti's collection</title>
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="/assets/css/styles.css">
+
+  <!-- Global CSS -->
+  <script src="/assets/js/main.js"></script>
+
+
+  <!-- Page-Specific CSS -->
+  
+
+  <!-- Conditional inclusion -->
+
+<!-- FancyApps CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css">
+<style>
+    /* Custom styles for the large image */
+    .large-image {
+        max-width: 100%;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+
+    }
+
+    .top-section {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* Fixed height for desktop Large Product Image */
+    .large-product-image {
+        overflow: hidden;
+        object-fit: cover;
+        cursor: zoom-in
+    }
+</style>
+
+
+
+</head>
+
+<body>
+  <header class="bg-gray-100 py-4 shadow-md">
+    <div class="container mx-auto px-4 flex items-center justify-between">
+        <!-- Logo and Page Title -->
+
+        <div class="space-x-4">
+            <a class="flex flex-row" href="/">
+                <img src="/assets/images/logo.png" alt="Logo" class="h-10 w-10 object-cover" />
+                <span class="text-2xl font-bold  ml-3">Fubiness</span>
+            </a>
+            
+        </div>
+        </a>
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex space-x-4">
+            <a href="/" class="text-gray-700 hover:text-gray-900">Home</a>
+            <a href="/about.html" class="text-gray-700 hover:text-gray-900">About</a>
+            <a href="/services.html" class="text-gray-700 hover:text-gray-900">Services</a>
+            <a href="/contact.html" class="text-gray-700 hover:text-gray-900">Contact</a>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden text-gray-700 focus:outline-none" id="menuButton">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="md:hidden" id="mobileMenu" style="display: none;">
+        <nav class="bg-gray-200 space-y-2 py-2 px-4">
+            <a href="/" class="block text-gray-700 hover:text-gray-900">Home</a>
+            <a href="/about.html" class="block text-gray-700 hover:text-gray-900">About</a>
+            <a href="/services.html" class="block text-gray-700 hover:text-gray-900">Services</a>
+            <a href="/contact.html" class="block text-gray-700 hover:text-gray-900">Contact</a>
+        </nav>
+    </div>
+</header>
+
+<script>
+    // JavaScript for toggling the mobile menu
+    const menuButton = document.getElementById('menuButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    menuButton.addEventListener('click', () => {
+        const isMenuVisible = mobileMenu.style.display === 'block';
+        mobileMenu.style.display = isMenuVisible ? 'none' : 'block';
+    });
+</script>
+
+  <main class="container mx-auto px-2 py-8">
+    <h1 class="text-2xl font-bold pb-6" id="pageTitle">Product details</h1>
+    <section class="product">
+
+    <!-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="details-container">
+    </div> -->
+
+    <div class="flex flex-col md:flex-row">
+        <div class="w-full md:w-2/5" id="product-details"></div>
+        <!-- Large Product Image -->
+        <div class="w-full md:w-2/5 large-product-image" id="trigger-gallery">
+            <img class="large-image" id="largeImage" src="large1.jpg" alt="Product Image" class="w-full h-auto"
+                dataIndex="0">
+        </div>
+
+        <!-- Thumbnails Container -->
+        <div class="w-full md:w-1/5 flex flex-wrap gap-2 mt-4 md:mt-0 lg:pl-5">
+            <div class="flex lg:flex-col flex-wrap lg:gap-2" id="thumbnailsContainer">
+
+            </div>
+        </div>
+    </div>
+
+    <!-- FancyApps JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+    <script>
+
+        var imageData = '';
+        // Go back to the previous page
+        function goBack() {
+            window.history.back()
+        }
+
+
+        // Function to get query parameters from the URL
+        function getQueryParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return {
+                category: urlParams.get('cat'),
+                page: parseInt(urlParams.get('page')),
+                id: urlParams.get('id')
+
+            };
+        }
+
+        // Function to fetch and render the details
+        async function renderDetails() {
+            const { category, page, id } = getQueryParams();
+
+            const productDetailsContainer = document.getElementById('product-details');
+
+            if (!category || isNaN(page) || !id) {
+                productDetailsContainer.innerHTML = '<p>Invalid URL parameters. Please provide both category, page and productId.</p>';
+                return;
+            }
+
+            try {
+                // Construct the file path dynamically
+                const filePath = `/data/${category}/page${page}.json`;
+
+                // Fetch data from the JSON file
+                const response = await fetch(filePath);
+                if (!response.ok) throw new Error(`Failed to load file: ${filePath}`);
+                const data = await response.json();
+
+                // Find the specific product
+                const productData = data.content[id];
+                if (!productData) throw new Error(`Product with ID ${id} not found`);
+
+                const { images, details } = productData;
+                const { title, description, salePrice, price } = details;
+
+                // Create imageData array
+                imageData = images.map(image => ({
+                    src: `/products/${category}/${id}/images/${image}`, // Update with your actual image folder path
+                    thumb: `/products/${category}/${id}/images/${image}` // Update with your actual thumbnail folder path
+                }));
+
+
+                images.map((image, index) => {
+                    let imgEle = document.createElement('img');
+                    imgEle.src = `/products/${category}/${id}/images/${image}`;
+                    imgEle.alt = title;
+                    imgEle.className = "thumbnail w-1/4 h-auto cursor-pointer border-2 border-transparent hover:border-gray-500";
+                    imgEle.onclick = () => updateLargeImage(`/products/${category}/${id}/images/${image}`, index);
+                    document.getElementById('thumbnailsContainer').appendChild(imgEle);
+                })
+
+                const largeImageContainer = document.getElementById('trigger-gallery');
+
+                largeImageContainer.innerHTML = `
+                    <img class="large-image" id="largeImage" src="/products/${category}/${id}/images/${images[0]}" alt="${title}" class="w-full h-auto" dataIndex="0">
+                `;
+
+                productDetailsContainer.innerHTML = `
+                    <h1 class="text-2xl font-bold text-gray-900">${title}</h1>
+                    <p class="text-lg text-gray-700 mt-2">${description}</p>
+                    <p class="text-lg text-gray-700 mt-2">Price:  <span class="text-green-500">Rs.${salePrice}</span> <span class="line-through text-red-500">Rs. ${price}</span></p>
+                `;
+
+            } catch (error) {
+                productDetailsContainer.innerHTML = `<p>Error loading details: ${error.message}</p>`;
+            }
+        }
+
+        function updatePageTitle() {
+            const { category, page } = getQueryParams();
+            const categoryTitle = convertSlugToText(category);
+            document.title = capitalizeAllWords(`${categoryTitle}`);
+            let pageTitleEle = document.getElementById('pageTitle');
+            pageTitleEle.innerHTML = `<a href="/list.html?cat=${category}&page=${page}">Back to ${capitalizeAllWords(categoryTitle)}</a>`;
+            // pageTitleEle.textContent = `${capitalizeAllWords(categoryTitle)}`;
+        }
+
+
+        // Trigger the gallery when clicking the top section
+        document.getElementById("trigger-gallery").addEventListener("click", (e) => {
+            const largeImage = document.getElementById('largeImage');
+            const imgIndex = largeImage.dataIndex;
+            const startIndex = parseInt(largeImage.dataIndex);
+            return Fancybox.show(
+                imageData,
+                {
+                    Toolbar: {
+                        display: {
+                            left: [],
+                            middle: [],
+                            right: ["close"],
+                        },
+                    },
+                    Thumbs: {
+                        showOnStart: true,
+                    },
+                    startIndex: startIndex
+
+                },
+
+            );
+
+        });
+
+        // Load and render details
+        renderDetails();
+        updatePageTitle();
+
+        function updateLargeImage(imageSrc, imgIndex) {
+            const largeImage = document.getElementById('largeImage');
+            largeImage.src = imageSrc;
+            largeImage.dataIndex = imgIndex;
+            // console.log(imgIndex)
+        }
+    </script>
+
+</section>
+  </main>
+
+  <!-- Footer -->
+<footer class="bg-gray-100 py-4 mt-8">
+    <div class="container mx-auto px-4 text-center">
+        <p>&copy; 2025 Fubiness. All rights reserved.</p>
+    </div>
+</footer>
+
+  <!-- Page-Specific JS -->
+  
+</body>
+
+</html>

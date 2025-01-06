@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang=" en-US">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>List of products - Chitti's collection</title>
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+
+  <!-- Global CSS -->
+  <link rel="stylesheet" href="/assets/css/styles.css">
+
+  <!-- Global CSS -->
+  <script src="/assets/js/main.js"></script>
+
+
+  <!-- Page-Specific CSS -->
+  
+
+  <!-- Conditional inclusion -->
+
+
+
+</head>
+
+<body>
+  <header class="bg-gray-100 py-4 shadow-md">
+    <div class="container mx-auto px-4 flex items-center justify-between">
+        <!-- Logo and Page Title -->
+
+        <div class="space-x-4">
+            <a class="flex flex-row" href="/">
+                <img src="/assets/images/logo.png" alt="Logo" class="h-10 w-10 object-cover" />
+                <span class="text-2xl font-bold  ml-3">Fubiness</span>
+            </a>
+            
+        </div>
+        </a>
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex space-x-4">
+            <a href="/" class="text-gray-700 hover:text-gray-900">Home</a>
+            <a href="/about.html" class="text-gray-700 hover:text-gray-900">About</a>
+            <a href="/services.html" class="text-gray-700 hover:text-gray-900">Services</a>
+            <a href="/contact.html" class="text-gray-700 hover:text-gray-900">Contact</a>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden text-gray-700 focus:outline-none" id="menuButton">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="md:hidden" id="mobileMenu" style="display: none;">
+        <nav class="bg-gray-200 space-y-2 py-2 px-4">
+            <a href="/" class="block text-gray-700 hover:text-gray-900">Home</a>
+            <a href="/about.html" class="block text-gray-700 hover:text-gray-900">About</a>
+            <a href="/services.html" class="block text-gray-700 hover:text-gray-900">Services</a>
+            <a href="/contact.html" class="block text-gray-700 hover:text-gray-900">Contact</a>
+        </nav>
+    </div>
+</header>
+
+<script>
+    // JavaScript for toggling the mobile menu
+    const menuButton = document.getElementById('menuButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    menuButton.addEventListener('click', () => {
+        const isMenuVisible = mobileMenu.style.display === 'block';
+        mobileMenu.style.display = isMenuVisible ? 'none' : 'block';
+    });
+</script>
+
+  <main class="container mx-auto px-2 py-8">
+    <h1 class="text-2xl font-bold pb-6" id="pageTitle">List of products</h1>
+    <section class="list">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="details-container"></div>
+
+    <div id="pagination-controls" class="text-center mt-5">
+        <button id="prev-btn"
+            class="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-600 disabled:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-400"
+            onclick="goToPage('previous')" :disabled="!prevEnabled">
+            << </button>
+                <span id="page-info" class="mx-4 text-gray-700"></span>
+                <button id="next-btn"
+                    class="bg-blue-500 text-white py-2 px-4 rounded-full hover:bg-blue-600 disabled:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-400"
+                    onclick="goToPage('next')" :disabled="!nextEnabled">>></button>
+    </div>
+
+    <script>
+        // Function to get query parameters from the URL
+        function getQueryParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return {
+                category: urlParams.get('cat'),
+                page: parseInt(urlParams.get('page'))
+            };
+        }
+
+        // Navigate to a specific page
+        function goToPage(direction) {
+            const { category, page } = getQueryParams();
+            const nextPage = direction === 'next' ? page + 1 : page - 1;
+
+            // Only navigate if the next/prev page is valid
+            if (nextPage < 1) return;
+            window.location.assign(`/list.html?cat=${category}&page=${nextPage}`);
+        }
+
+
+
+        // Function to fetch and render the details
+        async function renderDetails() {
+            const container = document.getElementById('details-container');
+            const paginationControls = document.getElementById('pagination-controls');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const pageInfo = document.getElementById('page-info');
+
+            const { category, page } = getQueryParams();
+
+            if (!category || isNaN(page)) {
+                container.innerHTML = '<p>Invalid URL parameters. Please provide both category and page.</p>';
+                paginationControls.style.display = 'none';
+                return;
+            }
+
+            try {
+                // Construct the file path dynamically
+                const filePath = `/data/${category}/page${page}.json`;
+
+                // Fetch data from the JSON file
+                const response = await fetch(filePath);
+                if (!response.ok) throw new Error(`Failed to load file: ${filePath}`);
+                const data = await response.json();
+
+                // Update pagination controls
+                const { pageNumber, totalPages, previousPage, nextPage, content } = data;
+                pageInfo.textContent = `Page ${pageNumber} of ${totalPages}`;
+                prevBtn.disabled = previousPage === null;
+                nextBtn.disabled = nextPage === null;
+
+                // Render the data
+                container.innerHTML = Object.keys(content).reverse().map(key => {
+                    const { images, details } = content[key];
+                    const { title, description, salePrice, price } = details;
+
+                    return `
+                    <!-- Product Item -->
+                    <div class="bg-white border rounded-lg shadow p-2 flex flex-col">
+                        <div class="relative w-full h-0 pb-[120%] overflow-hidden rounded-lg">
+                        <a href="/product.html?cat=${category}&page=${page}&id=${key}">
+                            <img src="/products/${category}/${key}/images/${images[0]}" alt="Product Image" class="absolute inset-0 w-full h-full object-cover">
+                        </a>
+                            </div>
+                        <div class="mt-4">
+                            <h2 class="text-lg font-semibold">
+                                <a href="/product.html?cat=${category}&page=${page}&id=${key}">${title}</a>    
+                            </h2>
+                            <p class="text-gray-600">₹ ${salePrice} <span class="line-through">${price}</span></p>
+                            <button class="mt-4 w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
+                                <a href="/product.html?cat=${category}&page=${page}&id=${key}">
+                                View
+                                </a>
+                            </button>
+                        </div>
+                    </div>`;
+                }).join('');
+
+
+            } catch (error) {
+                container.innerHTML = `<p>Error loading details: ${error.message}</p>`;
+                paginationControls.style.display = 'none';
+            }
+        }
+
+        function updatePageTitle() {
+            const { category, page } = getQueryParams();
+            const categoryTitle = convertSlugToText(category);
+            document.title = capitalizeAllWords(`${categoryTitle}`);
+            let pageTitleEle = document.getElementById('pageTitle');
+            pageTitleEle.textContent = `${capitalizeAllWords(categoryTitle)}`;
+        }
+        // Load and render details
+        renderDetails();
+        updatePageTitle();
+    </script>
+</section>
+  </main>
+
+  <!-- Footer -->
+<footer class="bg-gray-100 py-4 mt-8">
+    <div class="container mx-auto px-4 text-center">
+        <p>&copy; 2025 Fubiness. All rights reserved.</p>
+    </div>
+</footer>
+
+  <!-- Page-Specific JS -->
+  
+</body>
+
+</html>
